@@ -1,6 +1,6 @@
 package com.peacemaker.repository
 
-import com.peacemaker.BaseResponse.BaseResponse
+import com.peacemaker.util.BaseResponse
 import com.peacemaker.service.RegisterUser
 import com.peacemaker.service.UserService
 

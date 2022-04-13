@@ -1,7 +1,11 @@
-package com.peacemaker.BaseResponse
+package com.peacemaker.util
 
 import io.ktor.http.*
 
+/**
+ * @author Peacemaker Otoo
+ * Request response handler class
+ * */
 sealed class BaseResponse<T>(
     val statusCode: HttpStatusCode = HttpStatusCode.OK
 ){
@@ -13,6 +17,6 @@ sealed class BaseResponse<T>(
     data class ErrorResponse<T>(
         val message: String? = null,
         val exception: T? = null
-    ):BaseResponse<T>()
+    ): BaseResponse<T>()
 
 }

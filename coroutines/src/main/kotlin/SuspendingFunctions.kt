@@ -59,3 +59,9 @@ suspend fun getMessageOne(): String {
     return "world"
 }
 
+
+suspend fun getDelayTime(): String {
+    delay(1000)
+    return "Delayed for 1000ms"
+}
+

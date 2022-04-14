@@ -3,6 +3,7 @@ package com.peacemaker.service
 import com.peacemaker.db.DatabaseFactory.dbQuery
 import com.peacemaker.db.UserTable
 import com.peacemaker.models.User
+import com.peacemaker.security.encryptPassword
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -20,7 +21,7 @@ class UserServiceImpl : UserService {
         dbQuery {
             statement = UserTable.insert {
                 it[fullName] = params.fullName
-                it[password] = params.password
+                it[password] = encryptPassword(params.password)
                 it[email] = params.email
             }
         }

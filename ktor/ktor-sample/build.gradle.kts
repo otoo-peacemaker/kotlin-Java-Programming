@@ -9,6 +9,7 @@ plugins {
 
 group = "com.peacemaker"
 version = "0.0.1"
+
 application {
     mainClass.set("com.peacemaker.ApplicationKt")
 
@@ -27,13 +28,16 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
-    implementation("io.ktor:ktor-jackson:1.6.8")
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
 
+    //serialization and deserialization
+    implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")//media type
+    implementation("io.ktor:ktor-serialization-jackson:$ktor_version")//library to parse json content
+    implementation ("io.ktor:ktor-serialization:$ktor_version")
+
     //others
     implementation("ch.qos.logback:logback-classic:1.2.7")
-    implementation("commons-codec:commons-codec:1.14")
     implementation("ch.qos.logback:logback-access:0.7")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 

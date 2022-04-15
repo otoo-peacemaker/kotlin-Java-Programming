@@ -14,4 +14,8 @@ interface UserService {
 
     /**find user by email for validation if user already exist*/
     suspend fun findUserByEmail(email: String): User?
+
+    suspend fun loginUser(email: String, password: String):User?
+
+    
 }

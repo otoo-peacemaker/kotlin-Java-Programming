@@ -23,6 +23,7 @@ class UserServiceImpl : UserService {
                 it[fullName] = params.fullName
                 it[password] = encryptPassword(params.password)
                 it[email] = params.email
+                it[avatar] = params.avatar
             }
         }
         return rowToUser(statement?.resultedValues?.get(0))

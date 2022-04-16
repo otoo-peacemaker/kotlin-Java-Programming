@@ -1,9 +1,19 @@
+POST http://127.0.0.1:3566/auth/login
+Content-Type: application/json
+
+{
+  "email": "infofeedacc@gmail",
+  "password": "12345"
+
+}
+
+###
 POST http://127.0.0.1:3566/auth/register
 Content-Type: application/json
 
 {
   "fullName": "Peacemaker",
-  "email": "infofeedacc@gmail",
+  "email": "infofeed@gmail",
   "password": "12345",
   "avatar": "maker"
 }

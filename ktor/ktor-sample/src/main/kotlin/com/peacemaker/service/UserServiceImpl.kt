@@ -5,6 +5,7 @@ import com.peacemaker.db.UserTable
 import com.peacemaker.models.User
 import com.peacemaker.security.encryptPassword
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.statements.InsertStatement
@@ -12,12 +13,13 @@ import org.jetbrains.exposed.sql.statements.InsertStatement
 class UserServiceImpl : UserService {
     /**
      * @author Peacemaker Otoo
-     * A class to implement user services to the database
+     * A class to implement user services to perform DML database transaction queries
      * */
+
+    private var statement: InsertStatement<Number>? = null
 
     /**Query statement to register user to the database*/
     override suspend fun registerUser(params: RegisterUser): User? {
-        var statement: InsertStatement<Number>? = null
         dbQuery {
             statement = UserTable.insert {
                 it[fullName] = params.fullName
@@ -40,6 +42,40 @@ class UserServiceImpl : UserService {
             UserTable.select { UserTable.email.eq(email) }
                 .map { rowToUser(it) }.singleOrNull()
         }
+    }
+
+    /**check if password exist*/
+    override suspend fun ifPasswordCorrect(password: String): User? {
+        return dbQuery {
+            UserTable.select { UserTable.email.eq(password) }
+                .map { rowToUser(it) }.singleOrNull()
+        }
+    }
+
+    override suspend fun loginUser(params: LoginUser): User? {
+        return dbQuery {
+            UserTable.select {
+                UserTable.email.eq(params.email) and (UserTable.password.eq(params.password))
+            }
+                .map {
+                    rowToUser(it)
+                }.singleOrNull()
+        }
+    }
+
+    /**
+     * We can now use what we have learned about queries and insertions
+     * to update existing data in the database.
+     * Indeed,a simple update looks like a combination of a select with an insert:
+     * */
+    override suspend fun resetPassword(params: ResetPassword): User? {
+        /* return dbQuery {
+             UserTable.update({UserTable.email eq params.email}){
+                 it[UserTable.password] = params.password
+             }
+         }*/
+
+        return null
     }
 
 

@@ -15,7 +15,19 @@ interface UserService {
     /**find user by email for validation if user already exist*/
     suspend fun findUserByEmail(email: String): User?
 
-    suspend fun loginUser(email: String, password: String):User?
+    /**check if password exist*/
+    suspend fun ifPasswordCorrect(password: String):User?
 
-    
+    suspend fun loginUser(params:LoginUser):User?
+
+
+    /**
+     * For us to update the user password, we need select and insert.
+     * Thus, first select email as an id and update the corresponding password
+     * @param[email] : Find user by email and
+     * @param[password]: update the user password
+     * */
+    suspend fun resetPassword(params: ResetPassword):User?
+
+
 }

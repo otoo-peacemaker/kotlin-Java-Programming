@@ -1,4 +1,6 @@
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import java.security.spec.InvalidParameterSpecException
 
 
 fun exception() = runBlocking {
@@ -26,4 +28,27 @@ fun exception() = runBlocking {
     job.cancel("Job exceptions")
     job.join()
     println("The thread name : ${Thread.currentThread().name}")
+
+}
+
+suspend fun anotherMethod(){
+    val exceptionHandler = CoroutineExceptionHandler{_, ex ->
+        println("Caught : $ex.message")
+    }
+    val job = Job()
+    val scope = CoroutineScope(Dispatchers.Default +job)
+    val launch = scope.launch(exceptionHandler){
+        throwExLaunch("Err", true)
+    }
+
+    job.join()
+
+}
+
+suspend fun throwExLaunch(message: String, throwEX: Boolean = false) {
+delay(500)
+    if (throwEX){
+        throw InvalidParameterSpecException("I am exception")
+    }else{
+        println(message)}
 }

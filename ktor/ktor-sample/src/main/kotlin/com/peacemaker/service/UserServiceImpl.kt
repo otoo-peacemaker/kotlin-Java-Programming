@@ -2,12 +2,12 @@ package com.peacemaker.service
 
 import com.peacemaker.db.DatabaseFactory.dbQuery
 import com.peacemaker.db.UserTable
+import com.peacemaker.models.LoginUser
+import com.peacemaker.models.RegisterUser
+import com.peacemaker.models.ResetPassword
 import com.peacemaker.models.User
 import com.peacemaker.security.encryptPassword
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.InsertStatement
 
 class UserServiceImpl : UserService {
@@ -45,17 +45,34 @@ class UserServiceImpl : UserService {
     }
 
     /**check if password exist*/
-    override suspend fun ifPasswordCorrect(password: String): User? {
+    override suspend fun ifPasswordCorrect(email: String, password: String): User? {
         return dbQuery {
-            UserTable.select { UserTable.email.eq(password) }
+            UserTable.select {
+                UserTable.password.eq(password) and (UserTable.email eq (email))
+            }
                 .map { rowToUser(it) }.singleOrNull()
         }
     }
 
     override suspend fun loginUser(params: LoginUser): User? {
         return dbQuery {
+            /*    val query = UserTable.selectAll()
+             val qu =  with(UserTable){
+                    email?.let {
+                        query.andWhere {
+                            password eq it
+                        }
+                    }
+                }*/
             UserTable.select {
-                UserTable.email.eq(params.email) and (UserTable.password.eq(params.password))
+                /* with(UserTable){
+                     email?.let {
+                         query.andWhere {
+                             password eq it
+                         }
+                     }
+                 }*/
+                UserTable.email eq (params.email) and (UserTable.password eq (params.password))
             }
                 .map {
                     rowToUser(it)
@@ -69,13 +86,15 @@ class UserServiceImpl : UserService {
      * Indeed,a simple update looks like a combination of a select with an insert:
      * */
     override suspend fun resetPassword(params: ResetPassword): User? {
-        /* return dbQuery {
-             UserTable.update({UserTable.email eq params.email}){
-                 it[UserTable.password] = params.password
-             }
-         }*/
+      /*  return dbQuery {
 
-        return null
+            UserTable.update({
+                UserTable.email eq params.email }) {
+                it[password] = params.password
+            }
+        }*/
+
+       return  null
     }
 
 

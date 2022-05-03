@@ -30,6 +30,6 @@ class Generics2<T, S>(var data: T, var type: S) {
 }
 
 
-fun <T>GenericFunction(data: T){
+fun <T>GenericFunction(data: ()->T){
     println(data)
 }

@@ -1,5 +1,8 @@
 package com.peacemaker.service
 
+import com.peacemaker.models.LoginUser
+import com.peacemaker.models.RegisterUser
+import com.peacemaker.models.ResetPassword
 import com.peacemaker.models.User
 
 interface UserService {
@@ -10,15 +13,15 @@ interface UserService {
 
 
     /**Register user function to the user class*/
-    suspend fun registerUser(params:RegisterUser): User?
+    suspend fun registerUser(params: RegisterUser): User?
 
     /**find user by email for validation if user already exist*/
     suspend fun findUserByEmail(email: String): User?
 
-    /**check if password exist*/
-    suspend fun ifPasswordCorrect(password: String):User?
+    /**check if password exist by email*/
+    suspend fun ifPasswordCorrect(email: String, password: String):User?
 
-    suspend fun loginUser(params:LoginUser):User?
+    suspend fun loginUser(params: LoginUser):User?
 
 
     /**

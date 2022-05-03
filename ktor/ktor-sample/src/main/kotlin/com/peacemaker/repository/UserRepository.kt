@@ -1,9 +1,9 @@
 package com.peacemaker.repository
 
-import com.peacemaker.service.LoginUser
+import com.peacemaker.models.LoginUser
 import com.peacemaker.util.BaseResponse
-import com.peacemaker.service.RegisterUser
-import com.peacemaker.service.ResetPassword
+import com.peacemaker.models.RegisterUser
+import com.peacemaker.models.ResetPassword
 
 interface UserRepository {
     /**For Repository to make web request to interact with the database*/

@@ -6,9 +6,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.net.URI
 
 object DatabaseFactory {
     /**@author Peacemaker Otoo
@@ -28,7 +27,7 @@ object DatabaseFactory {
      * */
     fun init(){
         //initialize the connection
-        Database.connect(hikari())
+        Database.connect(localHikari())
 
         //create schema
         transaction {
@@ -39,20 +38,46 @@ object DatabaseFactory {
 
 
     /**
-     * Database config
+     * Database local database config
      * @return [HikariConfig] Return the database configuration
      * */
-    private fun hikari(): HikariDataSource{
+    private fun localHikari(): HikariDataSource{
         val config = HikariConfig()
-        config.driverClassName = "org.postgresql.Driver"
         config.jdbcUrl = "jdbc:postgresql:$databaseName?user=$dbUserName"
+        config.driverClassName = "org.postgresql.Driver"
         config.maximumPoolSize = 3
         config.password = password
         config.isAutoCommit = false
         config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+
         config.validate()
         return HikariDataSource(config)
     }
+
+    /**remote database config with Hikari*/
+
+    private fun remoteHikari(): HikariDataSource{
+        val config = HikariConfig()
+        config.driverClassName = System.getenv("JDBC_DRIVER")
+        config.maximumPoolSize = 3
+        config.password = password
+        config.isAutoCommit = false
+        config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+
+        //val uri = URI(System.getenv("DATABASE_URL"))
+        val uri = URI("jdbc:postgresql:$databaseName?user=$dbUserName")
+        val username = uri.userInfo.split(":").toTypedArray()[0]
+        val password = uri.userInfo.split(":").toTypedArray()[1]
+
+
+        config.jdbcUrl = "jdbc:postgresql://"+uri.host + ":" + uri.port + uri.path +"?sslmode = require"+ "&user=$username&password=$password"
+
+        config.validate()
+        return HikariDataSource(config)
+    }
+
+
+
 
     /**
      * Transactions are executed synchronously on the current thread,
@@ -69,7 +94,7 @@ object DatabaseFactory {
         }
     }
 
-    suspend fun<T> dbIntQuery(block: () -> Int):Int = withContext(Dispatchers.IO){
+    suspend fun<T> booleanQuery(block: () -> Boolean):Boolean = withContext(Dispatchers.IO){
         transaction {
             block()
         }

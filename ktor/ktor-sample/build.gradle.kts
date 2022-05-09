@@ -5,6 +5,7 @@ val logback_version: String by project
 plugins {
     application
     kotlin("jvm") version "1.6.20"
+    kotlin("plugin.serialization").version("1.6.21")
 }
 
 group = "com.peacemaker"
@@ -33,6 +34,8 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
+    implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
 
     //serialization and deserialization

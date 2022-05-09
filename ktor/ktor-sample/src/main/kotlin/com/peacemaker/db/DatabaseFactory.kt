@@ -1,5 +1,6 @@
 package com.peacemaker.db
 
+import com.peacemaker.db.schema.UserTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import kotlinx.coroutines.Dispatchers

@@ -1,14 +1,14 @@
-package com.peacemaker.repository
+package com.peacemaker.repository.auths
 
 import com.peacemaker.security.JWTConfig
 import com.peacemaker.models.LoginUser
 import com.peacemaker.models.RegisterUser
 import com.peacemaker.models.ResetPassword
-import com.peacemaker.service.UserService
+import com.peacemaker.service.auth.AuthService
 import com.peacemaker.util.BaseResponse
 import io.ktor.http.*
 
-class UserRepositoryImpl(private val userService: UserService) : UserRepository {
+class AuthRepositoryImpl(private val userService: AuthService) : AuthRepository {
 
     /**Check user by email, if exist throw[exception] else register new user
      * */
@@ -17,7 +17,6 @@ class UserRepositoryImpl(private val userService: UserService) : UserRepository 
         return if (isEmailExist(params.email)) {
             BaseResponse.ErrorResponse(
                 message = "Email already Exist",
-                "Registration failed",
                 HttpStatusCode.Conflict
             )
 
@@ -34,21 +33,31 @@ class UserRepositoryImpl(private val userService: UserService) : UserRepository 
     }
 
     override suspend fun loginUser(params: LoginUser): BaseResponse<Any> {
-        return if (!isEmailExist(params.email)) {
-            BaseResponse.ErrorResponse(
-                message = "Email does not exist",
-                "Login Exception",
-                HttpStatusCode.Unauthorized
-            )
+        return when {
+            !isEmailExist(params.email) -> {
+                BaseResponse.ErrorResponse(
+                    message = "Email does not exist",
+                    HttpStatusCode.Unauthorized
+                )
 
-        } else {
-            val user = userService.loginUser(params)
-            if (user != null) {
-                val token = JWTConfig.instance.createAccessToken(user.id)
-                user.authToken = token
-                BaseResponse.SuccessResponse(data = user, "Login successful", HttpStatusCode.OK)
-            } else {
-                BaseResponse.ErrorResponse(statusCode = HttpStatusCode.NotFound)
+            }
+
+            !isPasswordCorrect(params.email,params.password) -> {
+                BaseResponse.ErrorResponse(
+                    message = "Incorrect password",
+                    HttpStatusCode.Unauthorized
+                )
+            }
+
+            else -> {
+                val user = userService.loginUser(params)
+                if (user != null) {
+                    val token = JWTConfig.instance.createAccessToken(user.id)
+                    user.authToken = token
+                    BaseResponse.SuccessResponse(data = user, "Login successful", HttpStatusCode.OK)
+                } else {
+                    BaseResponse.ErrorResponse(statusCode = HttpStatusCode.NotFound)
+                }
             }
         }
     }
@@ -58,17 +67,10 @@ class UserRepositoryImpl(private val userService: UserService) : UserRepository 
             !isEmailExist(params.email) -> {
                 BaseResponse.ErrorResponse(
                     message = "Account does not exist",
-                    "Email not registered",
                     HttpStatusCode.Unauthorized
                 )
             }
-            !isPasswordCorrect(params.email,params.password) -> {
-                BaseResponse.ErrorResponse(
-                    message = "Incorrect password",
-                    "password mismatch",
-                    HttpStatusCode.Unauthorized
-                )
-            }
+
             else -> {
                 val reset = userService.resetPassword(params)
                 if (reset != null) {
@@ -76,7 +78,6 @@ class UserRepositoryImpl(private val userService: UserService) : UserRepository 
                 } else {
                     BaseResponse.ErrorResponse(
                         message = "Incorrect password",
-                        "password mismatch",
                         HttpStatusCode.Unauthorized
                     )
                 }

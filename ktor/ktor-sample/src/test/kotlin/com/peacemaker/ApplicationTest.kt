@@ -1,19 +1,19 @@
 package com.peacemaker
 
-import com.peacemaker.repository.UserRepository
-import com.peacemaker.repository.UserRepositoryImpl
+import com.peacemaker.repository.auths.AuthRepository
+import com.peacemaker.repository.auths.AuthRepositoryImpl
 import com.peacemaker.routes.authRoutes
 import io.ktor.http.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlin.test.*
 import io.ktor.server.testing.*
-import com.peacemaker.service.UserService
-import com.peacemaker.service.UserServiceImpl
+import com.peacemaker.service.auth.AuthService
+import com.peacemaker.service.auth.AuthServiceImpl
 
 class ApplicationTest {
-    private val service: UserService = UserServiceImpl()
-    private val repository: UserRepository = UserRepositoryImpl(service)
+    private val service: AuthService = AuthServiceImpl()
+    private val repository: AuthRepository = AuthRepositoryImpl(service)
 
     @Test
     fun testRoot() = testApplication {

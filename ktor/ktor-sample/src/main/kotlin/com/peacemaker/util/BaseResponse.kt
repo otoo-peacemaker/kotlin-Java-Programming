@@ -7,18 +7,18 @@ import io.ktor.http.*
  * Request response handler class
  * */
 sealed class BaseResponse<T>(
-    open val statusCode: HttpStatusCode
+    open val statusCode: HttpStatusCode?
 ) {
     data class SuccessResponse<T>(
         val data: T? = null,
         val message: String? = null,
-        override val statusCode: HttpStatusCode
+        override val statusCode: HttpStatusCode?
     ) : BaseResponse<T>(statusCode)
 
-    data class ErrorResponse<T>(
+    data class ErrorResponse(
         val message: String? = null,
-        val exception: T? = null, override
-        val statusCode: HttpStatusCode
-    ) : BaseResponse<T>(statusCode)
+        override val statusCode: HttpStatusCode?
+    ) : BaseResponse<Any>(statusCode)
 
+    class AuthorizationException(override val message: String?) : Throwable()
 }

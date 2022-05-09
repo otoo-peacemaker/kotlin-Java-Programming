@@ -1,4 +1,4 @@
-package com.peacemaker.db
+package com.peacemaker.db.schema
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime

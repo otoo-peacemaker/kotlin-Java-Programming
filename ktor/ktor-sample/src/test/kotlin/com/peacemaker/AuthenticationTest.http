@@ -2,7 +2,7 @@ POST http://127.0.0.1:3566/auth/login
 Content-Type: application/json
 
 {
-  "email": "nana@gmai.oc.com",
+  "email": "nanak@gmail.com",
   "password": "123456"
 
 }
@@ -12,8 +12,8 @@ POST http://127.0.0.1:3566/auth/register
 Content-Type: application/json
 
 {
-  "fullName": "Nana",
-  "email": "nana@gmai.oc.com",
+  "fullName": "Nana Kwesi Otoo",
+  "email": "nanak@gmail.com",
   "password": "123456",
   "avatar": "maker"
 }

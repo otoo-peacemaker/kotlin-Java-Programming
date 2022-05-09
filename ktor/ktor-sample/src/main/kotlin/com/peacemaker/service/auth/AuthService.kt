@@ -15,7 +15,7 @@ interface AuthService {
     suspend fun registerUser(params: RegisterUser): User?
 
     /**Login user function to the user class*/
-    suspend fun loginUser(params: LoginUser):User?
+    suspend fun loginUser(email: String, password: String):User?
 
     /**find user by [email] for validation if user already exist*/
     suspend fun findUserByEmail(email: String): User?

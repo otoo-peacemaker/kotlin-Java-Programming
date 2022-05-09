@@ -81,7 +81,6 @@ fun Application.configureInstallation() {
             call.respond(BaseResponse.ErrorResponse(cause.message!!, statusCode = HttpStatusCode.BadRequest))
         }
 
-
         exception<Throwable> { call, cause ->
             if (cause is BaseResponse.AuthorizationException) {
                 call.respondText(text = "403: ${cause.message}", status = HttpStatusCode.Forbidden)

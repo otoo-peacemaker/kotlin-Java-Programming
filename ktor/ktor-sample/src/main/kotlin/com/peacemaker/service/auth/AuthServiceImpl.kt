@@ -32,11 +32,11 @@ class AuthServiceImpl : AuthService {
         return statement?.resultedValues?.get(0).toUser()
     }
 
-    override suspend fun loginUser(params: LoginUser): User? {
-        val hashedPassword = encryptPassword(params.password)
+    override suspend fun loginUser(email: String, password: String): User? {
+        val hashedPassword = encryptPassword(password)
         val userRow = dbQuery {
             UserTable.select {
-                UserTable.email eq params.email and (UserTable.password eq hashedPassword)
+                UserTable.email eq email and (UserTable.password eq hashedPassword)
             }.firstOrNull()
         }
         return userRow.toUser()
@@ -75,8 +75,7 @@ class AuthServiceImpl : AuthService {
             UserTable.select {
                 UserTable.email eq email and (UserTable.password eq (hashedPassword))
                // UserTable.password eq (hashedPassword)
-            }
-                .map { it.toUser() }.singleOrNull()
+            }.map { it.toUser() }.singleOrNull()
         }
     }
 }

@@ -8,6 +8,12 @@ import com.peacemaker.service.auth.AuthService
 import com.peacemaker.util.BaseResponse
 import io.ktor.http.*
 
+/**
+ * Auth repository impl
+ *
+ * @property userService
+ * @constructor Create empty Auth repository impl
+ */
 class AuthRepositoryImpl(private val userService: AuthService) : AuthRepository {
 
     /**Check user by email, if exist throw[exception] else register new user
@@ -25,7 +31,7 @@ class AuthRepositoryImpl(private val userService: AuthService) : AuthRepository 
             if (user != null) {
                 val token = JWTConfig.instance.createAccessToken(user.id)
                 user.authToken = token
-                BaseResponse.SuccessResponse(data = user, "Registration successful", HttpStatusCode.OK)
+                BaseResponse.SuccessResponse(data = user, "Registration successfully", HttpStatusCode.OK)
             } else {
                 BaseResponse.ErrorResponse(statusCode = HttpStatusCode.BadRequest)
             }
@@ -50,7 +56,7 @@ class AuthRepositoryImpl(private val userService: AuthService) : AuthRepository 
             }
 
             else -> {
-                val user = userService.loginUser(params)
+                val user = userService.loginUser(params.email, params.password)
                 if (user != null) {
                     val token = JWTConfig.instance.createAccessToken(user.id)
                     user.authToken = token

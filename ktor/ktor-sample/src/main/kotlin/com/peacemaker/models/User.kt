@@ -1,5 +1,8 @@
 package com.peacemaker.models
 
+import com.fasterxml.jackson.annotation.JsonInclude
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class User(
     val id: Int,
     val fullName: String,

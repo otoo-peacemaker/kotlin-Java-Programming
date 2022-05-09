@@ -11,6 +11,11 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 
+/**
+ * Auth routes
+ *
+ * @param repository
+ */
 fun Application.authRoutes(repository: AuthRepository) {
     routing {
         authenticate {

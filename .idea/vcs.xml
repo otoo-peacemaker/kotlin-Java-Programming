@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ktor/ktor-http-api-sample" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ktor/ktor-sample" vcs="Git" />
   </component>
 </project>

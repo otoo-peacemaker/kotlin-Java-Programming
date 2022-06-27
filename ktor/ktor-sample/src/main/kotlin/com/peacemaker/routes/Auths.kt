@@ -3,6 +3,7 @@ package com.peacemaker.routes
 import com.peacemaker.repository.auths.AuthRepository
 import com.peacemaker.models.LoginUser
 import com.peacemaker.models.RegisterUser
+import com.peacemaker.models.ResetPassword
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -19,7 +20,7 @@ import io.ktor.server.routing.*
 fun Application.authRoutes(repository: AuthRepository) {
     routing {
         authenticate {
-            get("/testurl") {
+            get("/test") {
                 call.respond("testing token")
             }
         }
@@ -40,7 +41,14 @@ fun Application.authRoutes(repository: AuthRepository) {
                     result.statusCode?.let { it1 -> call.respond(it1, result) }
                 }
             }
-        }
 
+            post("/resetPassword") {
+                val params = call.receive<ResetPassword>()
+                val result = repository.resetUserPassword(params)
+                if (result != null) {
+                    result.statusCode?.let { it1 -> call.respond(it1, result) }
+                }
+            }
+        }
     }
 }

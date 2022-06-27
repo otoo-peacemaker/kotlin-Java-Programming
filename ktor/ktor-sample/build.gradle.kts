@@ -18,9 +18,18 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
+/*
 tasks.create("stage"){
     dependsOn("installDist")
 }//adding task to heroku
+*/
+
+/**a custom stage task used by Heroku to make an executable that
+ * gets run on Heroku's platform:*/
+tasks {
+    create("stage").dependsOn("installDist")
+}
+
 
 repositories {
     mavenCentral()

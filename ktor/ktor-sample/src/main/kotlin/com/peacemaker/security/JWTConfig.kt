@@ -26,7 +26,7 @@ class JWTConfig private constructor(secret: String){
 
     companion object{
         private const val ISSUER = "peacemaker"
-        private const val AUDIENCE = "otoo"
+        private const val AUDIENCE = "Otoo"
         const val CLAIM = "id"
 
 

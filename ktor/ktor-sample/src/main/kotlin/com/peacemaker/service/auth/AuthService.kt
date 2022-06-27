@@ -26,10 +26,10 @@ interface AuthService {
     /**
      * For us to update the user password, we need select and insert.
      * Thus, first select email as an id and update the corresponding password
-     * @param[params.email] : Find user by email and
-     * @param[params.password]: update the user password
+     * @param[email] : Find user by email and
+     * @param[password]: update the user password
      * */
-    suspend fun resetPassword(params: ResetPassword):User?
+    suspend fun resetPassword(email: String, password: String):User?
 
 
 }

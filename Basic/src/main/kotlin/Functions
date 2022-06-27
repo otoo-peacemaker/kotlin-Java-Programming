@@ -1,0 +1,38 @@
+/**In kotlin you define function in everywhere your code*/
+@file: JvmName("util")
+
+fun max(a: Int, b: Int) = if (a > b) a else b //topLevel
+
+class A {
+    fun memberFun() = 2//member function
+}
+
+fun other() {
+    fun localFunction() = 3//local function
+}
+
+//Note: Is it possible to call a top-level function from Java? If yes, how?
+/**yes you can a top level function from java as a static function of the class,
+ * which name corresponds to the file name*/
+//you can change the jvm name of the class containing top-level functions eg. @file:JvmName("")
+
+
+fun displaySeparator(char: Char = '*', size: Int = 10) {
+    repeat(size) {
+        println(char)
+    }
+}
+
+@JvmOverloads
+fun joinToMyStr(a: Char = '*', b: Char = '#', c: Char = '$') {
+    //what would be printed here?
+    println(
+        listOf(a, b, c).joinToString(
+            separator = "", prefix = "(", postfix = ")"
+        )
+    )
+
+    //right answer: (abc)
+}
+
+

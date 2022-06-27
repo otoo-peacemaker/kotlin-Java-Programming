@@ -47,7 +47,6 @@ class AuthRepositoryImpl(private val userService: AuthService) : AuthRepository 
                 )
 
             }
-
             !isPasswordCorrect(params.email,params.password) -> {
                 BaseResponse.ErrorResponse(
                     message = "Incorrect password",
@@ -78,12 +77,12 @@ class AuthRepositoryImpl(private val userService: AuthService) : AuthRepository 
             }
 
             else -> {
-                val reset = userService.resetPassword(params)
+                val reset = userService.resetPassword(params.email,params.password)
                 if (reset != null) {
                     BaseResponse.SuccessResponse(data = reset, "success", HttpStatusCode.OK)
                 } else {
                     BaseResponse.ErrorResponse(
-                        message = "Incorrect password",
+                        message = "Reset password failed",
                         HttpStatusCode.Unauthorized
                     )
                 }

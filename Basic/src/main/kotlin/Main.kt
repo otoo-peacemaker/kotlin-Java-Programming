@@ -1,5 +1,8 @@
 import TimeStampConverter.getDateString
 import java.util.*
+import kotlin.math.nextDown
+import kotlin.math.nextUp
+import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 fun main(args: Array<String>) {
@@ -21,8 +24,35 @@ fun main(args: Array<String>) {
     val printWeather = updateWeather(20).toString()
    // println(printWeather)
 
+
+  //  if (validator("nanakwesi@gmail.com","12345k690")) print("Successful") else{print("Fail")}
+
+  //  if(validator("nana@gmai.lcom","12345k690"))print("Successful") else{print("Fail")}
+
+    validator("nanakwesi@gmail.com","12345989")
+
+
+    val doubleValue = 29.4847472
+    val roundup = doubleValue.roundTo(2)
+    val dropme = doubleValue.nextDown()
+
+    println("The conversion value ::::::::::::::::::::::::: $roundup")
+    println("The conversion value : $dropme")
   //  println(isValidIdentifier("0kofile"))
 
+    val timeCon = Long.secondsToHHMM(73791)
+
+    println(buildString {
+        append("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+    })
+
+    println("::::::::::::::::::::::::: time "+timeCon)
+
+
+
     val matches = "" subStringMatcher "".toRegex()
+
+    val sol = mutableListOf(5,3,5,6)
+    println(solution(sol))
 }
 

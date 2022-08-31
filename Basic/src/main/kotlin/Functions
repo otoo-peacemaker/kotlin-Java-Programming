@@ -36,3 +36,34 @@ fun joinToMyStr(a: Char = '*', b: Char = '#', c: Char = '$') {
 }
 
 
+//ascending other
+fun findMin(list: List<Int?>): Int? {
+    return list.sortedWith(compareBy { it }).first()
+}
+
+
+//descending other
+fun findMax(list: List<Int?>): Int? {
+    return list.sortedWith(compareBy { it }).last()
+}
+
+fun findMinM(list: List<Int>): Int? {
+    var min = Int.MAX_VALUE
+    for (i in list) {
+        min = min.coerceAtMost(i)
+    }
+    return min
+}
+
+fun findMaxM(list: List<Int>): Int? {
+    var max = Int.MIN_VALUE
+    for (i in list) {
+        max = max.coerceAtLeast(i)
+    }
+    return max
+}
+
+
+
+
+

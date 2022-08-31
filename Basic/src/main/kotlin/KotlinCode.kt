@@ -1,6 +1,7 @@
 import java.awt.Color
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object TimeStampConverter {
     private val simpleDateFormat = SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.ENGLISH)
@@ -15,8 +16,6 @@ fun updateWeather(degrees: Int) {
         degrees < 25 -> "mild" to Color.ORANGE
         else -> "hot" to Color.RED
     }
-
-
 }
 
 /**
@@ -53,12 +52,13 @@ infix fun String.subStringMatcher(r: Regex): List<String> {
 }
 
 
+
+
 /**
  * A generic class that holds a value with its loading status.
  * @param <T>
  */
 sealed class Result<out T : Any> {
-
     data class Success<out T : Any>(val data: T) : Result<T>()
     data class Error(val exception: Exception) : Result<Nothing>()
 
@@ -70,3 +70,61 @@ sealed class Result<out T : Any> {
         }
     }
 }
+
+
+fun validator(email:String, password:String):Boolean{
+    return when{
+        !email.matches(("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\." +
+                "[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)\$").toRegex()) ->{
+            print("Invalid email")
+            return false
+        }
+        !password.matches("^{1}(?:.){6,}$".toRegex()) ->{
+            print("Invalid password")
+            return false
+        }
+        else -> {true}
+    }
+}
+
+
+fun Long.Companion.secondsToHHMM(seconds: Long): String {
+    val hh = TimeUnit.SECONDS.toHours(seconds)
+    val mm = TimeUnit.SECONDS.toMinutes(seconds)
+
+    val hr = seconds.div(3600)
+    val min = (seconds%3600)/60
+    return String.format("%02d:%02d", hr, min)
+
+}
+
+
+fun Float.roundTo(n: Int): Float {
+    //TODO locals eg:
+    return "%.${n}f".format(Locale.ENGLISH,this).toFloat()
+}
+
+fun Double.roundTo(n: Int): Double {
+    return "%.${n}f".format(this).toDouble()
+}
+
+fun solution(statues: MutableList<Int>): Int {
+    return statues.sortedWith(compareBy { it }).first()
+}
+
+
+fun ArrComparator(statues: MutableList<Int>): Int {
+    val min = statues.sortedWith(compareBy { it }).first()
+    val max = statues.sortedWith(compareBy { it }).last()
+
+    var counter = 0
+
+    for(i in min..max){
+        if(statues.indexOf(i)==-1)
+            counter ++
+    }
+
+    return counter
+}
+
+

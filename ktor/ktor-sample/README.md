@@ -1,5 +1,5 @@
-#Doing Backend with Kotlin using Tor[ktor]
-##Project contents:
+# Doing Backend with Kotlin using Tor[ktor]
+## Project contents:
 1. Working Exposed Framework
    1. Working with DataBase and DataSource [Hikari and postgres]
    2.  Transactions
